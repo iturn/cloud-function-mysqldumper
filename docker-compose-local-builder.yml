@@ -2,11 +2,10 @@ version: "3"
 
 services:
   google-cloud-mysqldumper:
-    container_name: google-cloud-mysqldumper
     build:
       context: .
       dockerfile: dockerfile
     working_dir: /usr/src/service
+    command: npm install
     volumes:
       - ./:/usr/src/service
-    command: npm run start

@@ -4,4 +4,6 @@ WORKDIR /usr/src/service
 
 COPY . .
 
-CMD npm install
+RUN npm install
+
+CMD npm run start

@@ -1,20 +1,30 @@
-"use strict";
+const { Storage } = require("@google-cloud/storage");
+const mysqldump = require("mysqldump");
 
-const { PubSub } = require("@google-cloud/pubsub");
-const { Mysqldump } = require("mysqldump-stream");
-
-exports.run = () => {
+exports.run = async () => {
   console.log("Start");
 
-  // const mysqldump = new Mysqldump("mydatabase", {
-  //   gzip: true, //default: false
-  //   host: "localhost", //default
-  //   port: 3306, //default
-  //   user: "root", //default: process.env.USER || 'root'
-  //   password: "mypassword", //default: false
-  // });
+  // todo make this work for many databases
+  const dumpObject = await mysqldump({
+    connection: {
+      host: "localhost",
+      port: "3307",
+      user: "root",
+      password: "password",
+      database: "api-db",
+    },
+    format: false,
+  });
 
-  //   const fs = require("fs");
-  //   mysqldump.start();
-  //   mysqldump.pipe(fs.createWriteStream("./mydatabase.sql.gz"));
+  const storage = new Storage({
+    keyFilename: process.env.keyFilePath,
+  });
+  const myBucket = storage.bucket(process.env.gcBucket);
+
+  const stream = myBucket.file("test/test.dump").createWriteStream();
+  stream.write(dumpObject.dump.schema);
+  stream.write(dumpObject.dump.data);
+  stream.end();
+
+  console.log("End");
 };
