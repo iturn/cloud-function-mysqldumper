@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  google-cloud-mysqldumper:
+    container_name: google-cloud-mysqldumper
+    build:
+      context: .
+      dockerfile: dockerfile
+    working_dir: /usr/src/service
+    volumes:
+      - ./:/usr/src/service
+    command: node index.js

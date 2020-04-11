@@ -1,0 +1,12 @@
+{
+  "name": "cloud-functions-mysqldumper",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@google-cloud/pubsub": "1.7.*",
+    "mysqldump-stream": "1.0.*"
+  }
+}
